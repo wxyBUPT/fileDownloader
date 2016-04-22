@@ -38,8 +38,11 @@ class AudioDownloader(FilesPipeline):
         '''
         path = os.path.join(item['audio_base'],results[0][1]['path'])
         checksum = results[0][1]['checksum']
+        print item['_id']
+        print item['collection']
+
         self.db[item['collection']].update(
-            {'id':item['_id']},
+            {'_id':item['_id']},
             {
                 '$set':{
                     'audioDownloadDir':path,

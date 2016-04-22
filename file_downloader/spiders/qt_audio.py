@@ -7,24 +7,23 @@ from conf_util import ConfUtil
 from file_downloader.items import AudioItem
 
 
-class KlAudioSpider(scrapy.Spider):
-    name = "kl_audio"
-    client = MongoClient(ConfUtil.getMongoIP(),ConfUtil.getMongoPort())
-    db = client[ConfUtil.getDBName()]
-    k_audio = db[ConfUtil.getKLAudioCollectionName()]
-    custom_settings = get_project_settings().getdict('KL_SETTINGS')
-    FILES_STORE_BASE = custom_settings['FILES_STORE']
-    k_audio_collection_name = ConfUtil.getKLAudioCollectionName()
-
+class QtAudioSpider(scrapy.Spider):
+    name = "qt_audio"
     start_urls = (
     )
+    client = MongoClient(ConfUtil.getMongoIP(),ConfUtil.getMongoPort())
+    db = client[ConfUtil.getDBName()]
+    c_audio = db[ConfUtil.getQTAudioCollectionName()]
+    custom_settings = get_project_settings().getdict('QT_SETTINGS')
+    FILES_STORE_BASE = custom_settings['FILES_STORE']
+
     def start_requests(self):
         yield scrapy.Request(
-            "http://www.baidu.com",callback=self.parse
+            'http://www.baidu.com',callback=self.parse
         )
 
     def parse(self, response):
-        cursor = self.k_audio.find(
+        cursor = self.c_audio.find(
             {
                 'audioDownloadDir':None
             }
@@ -32,8 +31,8 @@ class KlAudioSpider(scrapy.Spider):
         for audio in cursor:
             audioItem = AudioItem()
             audioItem['_id'] = audio['_id']
-            audioItem['collection'] = self.k_audio_collection_name
-            audioItem['url'] = audio['m3u8PlayUrl']
+            audioItem['collection'] = ConfUtil.getQTAudioCollectionName()
+            audioItem['url'] = audio['playUrl']
             audioItem['audio_base'] = self.FILES_STORE_BASE
             yield audioItem
 
