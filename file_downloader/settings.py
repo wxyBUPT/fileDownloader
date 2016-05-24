@@ -26,6 +26,10 @@ QT_SETTINGS = {
         "IMAGES_STORE":'/var/crawler/qt/images',
         "FILES_STORE":'/var/crawler/qt/audios'
 }
+LIVE_SETTINGS = {
+        "IMAGES_STORE":'/var/crawler/live/images',
+        "FILES_STORE":'/var/crawler/live/files'
+}
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'file_downloader (+http://www.yourdomain.com)'
 
@@ -74,7 +78,8 @@ QT_SETTINGS = {
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 #    'file_downloader.pipelines.SomePipeline': 300,
-        'file_downloader.pipelines.AudioDownloader'
+        'file_downloader.pipelines.AudioDownloader':100,
+        'file_downloader.pipelines.LiveImageDownloader':101
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

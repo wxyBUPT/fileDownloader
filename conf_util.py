@@ -5,7 +5,7 @@ class ConfUtil:
 
     @classmethod
     def getDBName(cls):
-        return 'w_spider'
+        return 'test_spider'
 
     @classmethod
     def getXMLYAlbumCollectionName(cls):
@@ -66,3 +66,12 @@ class ConfUtil:
         :return:
         '''
         return "http://myhost:8080/toCNR/{sourceWeb}/{uuid}"
+
+    @classmethod
+    def getLiveDbName(cls):
+        return 'live'
+
+    @classmethod
+    def getLiveCollectionName(cls):
+        return 'live_source'
+

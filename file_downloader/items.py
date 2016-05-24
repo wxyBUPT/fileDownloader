@@ -14,6 +14,7 @@ class FileDownloaderItem(scrapy.Item):
     pass
 
 class AudioItem(scrapy.Item):
+    type = 'audio'
     #对应的collection
     collection = scrapy.Field()
     #数据库中对应的id
@@ -22,3 +23,14 @@ class AudioItem(scrapy.Item):
     url = scrapy.Field()
     #文件存储路径
     audio_base = scrapy.Field()
+
+class LiveImageItem(scrapy.Item):
+    type = 'live'
+    #对应的collection
+    collection = scrapy.Field()
+    #数据库中对应的_id
+    _id = scrapy.Field()
+    #发送请求的url
+    url = scrapy.Field()
+    #文件存储的路径
+    image_base = scrapy.Field()

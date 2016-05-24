@@ -20,7 +20,8 @@ class AudioDownloader(FilesPipeline):
     db = client[ConfUtil.getDBName()]
 
     def get_media_requests(self, item, info):
-        yield scrapy.Request(item['url'])
+        if item.type == 'audio':
+            yield scrapy.Request(item['url'])
 
     def item_completed(self, results, item, info):
         '''
@@ -36,20 +37,44 @@ class AudioDownloader(FilesPipeline):
         'path': 'full/9668aa9324060a7d8e193b46b96257.m4a',
         'checksum': '79b63c45bef51ebac3aa5ab69018d0d9'})]
         '''
-        path = os.path.join(item['audio_base'],results[0][1]['path'])
-        checksum = results[0][1]['checksum']
-        print item['_id']
-        print item['collection']
-
-        self.db[item['collection']].update(
-            {'_id':item['_id']},
-            {
-                '$set':{
-                    'audioDownloadDir':path,
-                    'checksum':checksum
+        if item.type == 'audio':
+            path = os.path.join(item['audio_base'],results[0][1]['path'])
+            checksum = results[0][1]['checksum']
+            self.db[item['collection']].update(
+                {'_id':item['_id']},
+                {
+                    '$set':{
+                        'audioDownloadDir':path,
+                        'checksum':checksum
+                    }
                 }
-            }
-        )
+            )
+        return item
+
+class LiveImageDownloader(FilesPipeline):
+    client = MongoClient(ConfUtil.getMongoIP(),ConfUtil.getMongoPort())
+
+    db = client[ConfUtil.getLiveDbName()]
+
+    def get_media_requests(self, item, info):
+        print item.type
+        if item.type == 'live':
+            yield scrapy.Request(item['url'])
+
+    def item_completed(self, results, item, info):
+        if item.type == 'live':
+            path = os.path.join(item['image_base'],results[0][1]['path'])
+            checksum = results[0][1]['checksum']
+            self.db[item['collection']].update(
+                {'_id':item['_id']},
+                {
+                    '$set':{
+                        'img':path,
+                        'imgCheckSum':checksum
+                    }
+                }
+            )
+        return item
 
 
 
