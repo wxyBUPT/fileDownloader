@@ -30,6 +30,9 @@ LIVE_SETTINGS = {
         "IMAGES_STORE":'/var/crawler/live/images',
         "FILES_STORE":'/var/crawler/live/files'
 }
+
+DOWNLOAD_MAXSIZE = 0
+DOWNLOAD_WARNSIZE = 0
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'file_downloader (+http://www.yourdomain.com)'
 
